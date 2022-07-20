@@ -1,0 +1,19 @@
+Code to solve the fixed-volume bidensity problem to compare with experimental data. A formal readme may exist in the future.
+
+Folders:
+
+scripts: Contains code to generate data and plots for the comparison. Documentation can be found there.
+
+experimental_data: (rename) .mat files of experimental data.
+
+ODEsolve: Solves the equilibrium BVP for given volume fractions. All the parameters for the problem are defined in set_constants2.
+
+ODEdata: includes tables of fluxes for the default parameters (current settings of set_constants2) for some useful angles. Use these unless new ones need to be computed (it can take a few hours).
+
+bidisperse_pde: Includes a script to generate the pre-computed flux table (generate_flux_table). Also has the code that solves the dynamic problem (bidisperse_PDE_exp). 
+
+plotting: some plotting tools used by plot_soln (can be edited out).
+
+
+
+Updated 8/7/2014, Jeffrey Wong.

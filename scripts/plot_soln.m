@@ -1,0 +1,118 @@
+%Plot script given a solution struct from the PDE solver
+%Use and adjust as needed
+
+% Saves the results to a pdf (last lines).
+
+function plot_soln(bsol,comparison_name,type)
+
+load([comparison_name,'.mat'])
+
+if(type>=1) %Mono. case
+    fronts_exp(:,1) = pdmsAvFrontcm(2,:);
+    fronts_exp(:,2) = colorAvFrontcm(2,:);
+    times_exp = colorAvFrontcm(1,:);
+    
+else %Bidisperse case (may needed to be edited if data format changes)
+    fronts_exp(:,1) = pdmsAvFrontcm(2,:);
+    fronts_exp(:,2) = color2AvFrontcm(2,:);
+    fronts_exp(:,3) = color1AvFrontcm(2,:);
+    times_exp = color1AvFrontcm(1,:);
+end
+
+
+%---------------
+% Rescale data: put time in seconds and length in cm (from simulations)
+
+T_s = bsol.T*bsol.t_dim; %dimensional time (seconds)
+
+t_shift = 0; % Manually adjust end of 'transient' (usually set to zero)
+L_shift = 0;
+
+fronts = bsol.fronts*100 + L_shift; %front position (cm)
+T_s = T_s + t_shift;
+
+
+%Some plot settings (can this be done locally instead?)
+default_interpreter = get(0,'defaulttextinterpreter');
+set(0,'defaulttextinterpreter','latex');
+
+figure(3)
+clf
+subplot(1,2,1)
+colors = {'r','b'}; %colors for particle 1 and particle 2 (for consistency)
+                    %fluid is always black
+                    
+                    
+%------------------------------
+%
+%   Plot fronts and experimental data (as dots)
+%
+
+if(type>=1)
+    plot(T_s,fronts(:,1),'--k',T_s,fronts(:,2),['--',colors{type}]);
+    hold on
+    plot(times_exp,fronts_exp(:,1),'xk',times_exp,fronts_exp(:,2),['x',colors{type}],'MarkerSize',2)
+    
+    if(type==1)
+        legend('fluid','light','Location','Southeast');
+    else
+        legend('fluid','heavy','Location','Southeast');
+    end
+    
+else
+    plot(T_s,fronts(:,1),'--k',T_s,fronts(:,2),'--r',T_s,fronts(:,3),'--b');
+    hold on
+    plot(times_exp,fronts_exp(:,1),'xk',times_exp,fronts_exp(:,2),'xr', ...
+        times_exp,fronts_exp(:,3),'xb','MarkerSize',2)
+    legend('fluid','light','heavy','Location','Southeast');
+    
+end
+xlabel('$t$ (s)')
+ylabel('cm')
+
+hold off
+
+axis([0 1.5*times_exp(end) 0 1.3*fronts_exp(end,1)]);
+
+
+
+%----------------------------------
+%
+%   Simple plot against t^(1/3). Note that this should be shifted
+%   to better show the asymptotic behavior, so that it starts at the end
+%   of the transient phase (not done here).
+%
+figure(3)
+subplot(1,2,2)
+T_e = T_s.^(1/3);
+times_exp_e = times_exp.^(1/3);
+if(type>=1) 
+    plot(T_e,fronts(:,1),'--k',T_e,fronts(:,2),['--',colors{type}]);
+    hold on
+    plot(times_exp_e,fronts_exp(:,1),'xk',times_exp_e,fronts_exp(:,2),...
+        ['x',colors{type}],'MarkerSize',2);
+    
+    %Mono. case: Labels the appropriate particle type
+    if(type==1)
+        legend('fluid','light','Location','Southeast');
+    else
+        legend('fluid','heavy','Location','Southeast');
+    end
+else
+    %Bidisperse case
+    plot(T_e,fronts(:,1),'--k',T_e,fronts(:,2),'--r',T_e,fronts(:,3),'--b');
+    hold on
+    plot(times_exp_e,fronts_exp(:,1),'xk',times_exp_e,fronts_exp(:,2),'xr', ...
+        times_exp_e,fronts_exp(:,3),'xb','MarkerSize',2)
+    legend('fluid','light','heavy','Location','Northwest');
+end
+xlabel('$t^{1/3}$ (s)')
+ylabel('cm')
+axis([0 1.5*times_exp_e(end) 0 1.3*fronts_exp(end,1)]);
+hold off
+
+save_scaled_pdf(comparison_name,[8 4],gcf);
+
+
+set(0,'defaulttextinterpreter',default_interpreter);
+%axis([0 1.05*times_exp(end)^(1/3) 0 1.1*fronts_exp(end,1)]);

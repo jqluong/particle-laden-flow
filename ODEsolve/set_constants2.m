@@ -21,7 +21,7 @@ if(nargin > 1 && ~isempty(varargin{2}))
 else   
     d1 = 2475;  % diameter of smaller particle
     d2 = 3800; % diameter of larger particle
-    rholiq = 971;    % density of the liquid
+    rholiq = 971;    % density of the liquid (kg/m^3)
 end
 
 if(nargin > 4)

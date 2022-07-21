@@ -1,7 +1,7 @@
 A = set_constants2(30);
 
 phi0 = 0.3;
-X0 = 0;
+X0 = .25;
 p0 = [0.4 -6];
 
 sol = solve_bidensity_ODE(phi0,X0,p0,A);

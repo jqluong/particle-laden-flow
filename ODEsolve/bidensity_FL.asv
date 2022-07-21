@@ -77,13 +77,12 @@ else
     
     %Time to actually make the ODEs
     dphi = (M(phi,X,sigma)*Q(phi,X) - P(phi,x)*O(phi,X,sigma)) ...
-        /(M(phi,X,sigma)*N(phi,X,sigma) - L(phi,X,sigma)*O(phi,X,sigma));
+        /(M(phi,X,sigma)*N(phi,X,sigma) - L(phi,X,
     
     if(X<=0 || X>=1) 
         dsLX = 0;
     else
-       dsLX = 1/gamma*1/X*(L(phi,X,sigma)*Q(phi,X) - P(phi,x)*N(phi,X,sigma)) ...
-        /(-M(phi,X,sigma)*N(phi,X,sigma) + L(phi,X,sigma)*O(phi,X,sigma));
+        dsLX = (A.c0/gamma)*(1-X)*phimax/((phimax-phi)*sigma*A.Dtr(phi));
     end
 end
 

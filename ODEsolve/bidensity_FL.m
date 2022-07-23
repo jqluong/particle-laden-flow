@@ -29,12 +29,13 @@ else
     %There's a bunch of terms to build up to create the ODEs
     %Diffusion type coefficient matrices
     Kd = A.Kc * 0.61;
+    K_c = A.Kc;
     %Construct AA, matrix for drift
-    AA(2,2) = zeros(2,2);
+    AA = zeros(2,2);
     AA(1,1) = 1/4*A.d1^2;
     AA(2,2) = 1/4*A.d2^2;
-    AA(1,2) = 1/4 * (A.d1 + A.d2)^2 / 2^(d+1) * (1 + A.di/A.dj)^d / ...
-        (1 + (A.di/A.dj)^d);
+    AA(1,2) = 1/4 * (A.d1 + A.d2)^2 / 2^(d+1) * (1 + A.d1/A.d2)^d / ...
+        (1 + (A.d1/A.d2)^d);
     AA(2,1) = AA(1,2);
     %Construct DD, matrix for tracer.  These are functions in phi and x
     kb = 1.380649 * (10^-23); %Boltzman constant in m^2 kg / s^2 K
@@ -47,7 +48,7 @@ else
     
     %Build blocks for ODE
     e = @(x,sigma) 2*(Kc - Kv)*sigma*phi;
-    xi = @(phi,x,sigma) phi/phi_m(phi,x) * (phi_m(phi,x) - A.phi_max*(3 - 5*x))/(2*x*(1-x));
+    xi = @(phi,x,sigma) phi/phi_m(phi,x) * (phi_m(phi,x) - A.phimax*(3 - 5*x))/(2*x*(1-x));
     mu = @(phi,x) (1 - phi/phi_m(phi,x))^2;
     F1 = @(phi,x,sigma) -phi/mu(phi,x) * x * AA(1,1) * (K_c*sigma*x + e*x) ...
         - phi/mu(phi,x) * x * AA(1,2) * (K_c*sigma*(1-x) + e*(1-x));
@@ -62,9 +63,9 @@ else
     H2 = @(phi,x) -phi/mu(phi,x) * (1-x) * AA(1,1)*(phi*x*(-1 - phi*A.rhos)) ...
         - phi/mu(phi,x)*(1-x)*A(1,2)*(phi*(1-x)*(-1 - phi*A.rhos));
     J1 = @(phi,x) X*phi / (phi_m(phi,x) - (1-x)*phi^2);
-    K1 = @(phi,x) A.d1^2 * cot(alpha)*phi*x / 18 * (1 - phi/phi_m(phi,x))*(A.rho - A.rholiq);
+    K1 = @(phi,x) -A.d1^2 * cot(A.alpha)*phi*x / 9 * (1 - phi/phi_m(phi,x))*(A.rho - A.rholiq);
     J2 = @(phi,x) (1-X)*phi / (phi_m(phi,x) - x*phi^2);
-    K2 = @(phi,x) A.d2^2 * cot(alpha)*phi*(1-x) / 18 * (1 - phi/phi_m(phi,x))*(A.rho - A.rholiq);
+    K2 = @(phi,x) -A.d2^2 *2* cot(A.alpha)*phi*(1-x) / 9 * (1 - phi/phi_m(phi,x))*(A.rho - A.rholiq);
     
     %Almost there, these are the big blocks
     L = @(phi,x,sigma) F1(phi,x,sigma) + DD11*x + J1(phi,x)*DD11*x;
@@ -76,13 +77,13 @@ else
     
     
     %Time to actually make the ODEs
-    dphi = (M(phi,X,sigma)*Q(phi,X) - P(phi,x)*O(phi,X,sigma)) ...
+    dphi = (M(phi,X,sigma)*Q(phi,X) - P(phi,X)*O(phi,X,sigma)) ...
         /(M(phi,X,sigma)*N(phi,X,sigma) - L(phi,X,sigma)*O(phi,X,sigma));
     
     if(X<=0 || X>=1) 
         dsLX = 0;
     else
-       dsLX = 1/gamma*1/X*(L(phi,X,sigma)*Q(phi,X) - P(phi,x)*N(phi,X,sigma)) ...
+       dsLX = 1/gamma*1/X*(L(phi,X,sigma)*Q(phi,X) - P(phi,X)*N(phi,X,sigma)) ...
         /(-M(phi,X,sigma)*N(phi,X,sigma) + L(phi,X,sigma)*O(phi,X,sigma));
     end
 end

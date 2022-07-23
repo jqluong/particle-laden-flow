@@ -15,13 +15,13 @@ Kcoll = 0.41;
 
 %(add an argument to pass in rho of sphere)
 if(nargin > 1 && ~isempty(varargin{2}))
-    d1 = varargin{2};  % diameter of smaller particle (cm, i think?)
-    d2 = varargin{3}; % diameter of larger particle
+    d1 = varargin{2};  % diameter of larger particle (m)
+    d2 = varargin{3}; % diameter of smaller particle
     rholiq = varargin{4}; %density of liquid
-    rho = varagin{5};
+    rho = varargin{5};  %density of sphere
 else   
-    d1 = 2475;  % diameter of smaller particle
-    d2 = 3800; % diameter of larger particle
+    d1 = 370 * 10^-6;  % diameter of larger particle
+    d2 = 225 * 10^-6; % diameter of smaller particle
     rholiq = 971;    % density of the liquid (kg/m^3)
     rho = 2500; %density of the sphere
 end
@@ -53,7 +53,7 @@ A.Dtr = @(phi) (phi <= phia)*Kt*phi.^2 + (phi > phia)*Kt*(phia)^2;
 c1   = 2*(Kvisc-Kcoll)/Kcoll;      % constant c1 in ode
 c2   = 2/(9*Kcoll*tan(alpha));     % constant c2 in ode
 %A.c0 = 2*(rhos2-rhos1)*cot(alpha)/9; %constant c0 in X' ODE (two species)
-A.c0 = 1; %%%%%%%THIS IS A PLACEHOLDER VALUE%%%%%%%%%%
+A.c0 = 2*cot(alpha)/9; %%%%%%%THIS IS A PLACEHOLDER VALUE%%%%%%%%%%
 
 %Critical phi as a function of density
 A.phic = @(rhos) -(c2*rhos+1)./(2*rhos)+sqrt(c2+(0.5*(c2*rhos+1)./rhos).^2);

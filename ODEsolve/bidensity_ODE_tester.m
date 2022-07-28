@@ -1,9 +1,10 @@
 A = set_constants2(30);
 
-phi0 = 0.3;
-X0 = .25;
-p0 = [0.4 -6];
+phi0 = 0.5;
+X0 = 0.01;
+p0 = [0.51 0.01];
 
+%Solve ODE
 sol = solve_bidensity_ODE(phi0,X0,p0,A);
 Z = sol.Z;
 X = sol.X;
@@ -13,6 +14,7 @@ T = sol.T;
 figure(1)
 clf
 plot(Z,phi,'-k',Z,X,'-r');
+title('phi v. Z')
 Zt = Z(Z < T);
 Xt = X(Z < T);
 figure(2)

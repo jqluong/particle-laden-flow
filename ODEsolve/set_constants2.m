@@ -20,7 +20,7 @@ if(nargin > 1 && ~isempty(varargin{2}))
     rholiq = varargin{4}; %density of liquid
     rho = varargin{5};  %density of sphere
 else   
-    d1 = 370 * 10^-6;  % diameter of larger particle
+    d1 = 370 * 10^-6;  % diameter of larger particle (m)
     d2 = 225 * 10^-6; % diameter of smaller particle
     rholiq = 971;    % density of the liquid (kg/m^3)
     rho = 2500; %density of the sphere
@@ -62,10 +62,11 @@ A.phic = @(rhos) -(c2*rhos+1)./(2*rhos)+sqrt(c2+(0.5*(c2*rhos+1)./rhos).^2);
 A.p_r = @(rhos) (phimax + rhos*phimax^2 + c2*rhos*(phimax-1))/(c1*phimax*(1+rhos*phimax));
 
 %IVP solver settings
-A.vopt = odeset('RelTol', 1e-7, 'AbsTol', 5e-8,'MaxStep', 5e-2);
+A.vopt = odeset('RelTol', 1e-5, 'AbsTol', 5e-7,'MaxStep', 1e-2);
 A.ODEsolve = @ode15s;
 A.gamma = A.c0/Kt; %Scaling factor
 A.max_it = 100;
+A.dz = 0.0005; %Timestep for Euler Method
 
 A.d1 = d1; A.d2 = d2; A.rholiq = rholiq;
 A.phimax = phimax; 

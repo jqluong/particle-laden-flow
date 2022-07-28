@@ -1,0 +1,11 @@
+1: Elapsed time is 2912.002461 seconds. (note: matlab gave warning about timesteps)
+2: Elapsed time is 1.243127 seconds.
+3: Elapsed time is 2734.190016 seconds.
+4: Elapsed time is 1841.189075 seconds.
+5: Elapsed time is 2893.004589 seconds.
+
+ode23s (note: matrix is singular or badly scaled)
+1: Elapsed time is 52.516009 seconds.
+
+od34
+1: took too long

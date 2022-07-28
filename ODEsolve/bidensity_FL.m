@@ -17,10 +17,10 @@ rhoX = A.rhos;
 
 %Auxillary functions
 b = abs(A.d1 - A.d2 / (A.d1 + A.d2));
-delta = @(phi,x) A.rho * phi * (x * A.d1/2 + (1-x)*A.d2/2)^2 / ...
+delta = @(phi,x) A.rhos * phi * (x * A.d1/2 + (1-x)*A.d2/2)^2 / ...
     ( (x * A.d1/2)^2 + ( ( 1-x) * A.d2/2)^2);
 phi_m = @(phi,x) A.phimax * (1 + 3/2 * b^(3/2) * (x)^3/2 * (1 - x));
-S = @(phi,x) (phi_m(phi,x)^2 - phi^2) / (phi_m(phi,x) - phi*(1 - delta));
+S = @(phi,x) (phi_m(phi,x)^2 - phi^2) / (phi_m(phi,x) - phi*(1 - delta(phi,x)));
 
 if(phi >= phimax || phi<= 0) %Degenerate case
     dphi = 0;
@@ -29,7 +29,8 @@ else
     %There's a bunch of terms to build up to create the ODEs
     %Diffusion type coefficient matrices
     Kd = A.Kc * 0.61;
-    K_c = A.Kc;
+    Kc = A.Kc;
+    Kv = A.Kv;
     %Construct AA, matrix for drift
     AA = zeros(2,2);
     AA(1,1) = 1/4*A.d1^2;
@@ -50,29 +51,29 @@ else
     e = @(x,sigma) 2*(Kc - Kv)*sigma*phi;
     xi = @(phi,x,sigma) phi/phi_m(phi,x) * (phi_m(phi,x) - A.phimax*(3 - 5*x))/(2*x*(1-x));
     mu = @(phi,x) (1 - phi/phi_m(phi,x))^2;
-    F1 = @(phi,x,sigma) -phi/mu(phi,x) * x * AA(1,1) * (K_c*sigma*x + e*x) ...
-        - phi/mu(phi,x) * x * AA(1,2) * (K_c*sigma*(1-x) + e*(1-x));
-    G1 = @(phi,x,sigma) -phi/mu(phi,x) * x * AA(1,1) * (-K_c*sigma*phi -xi(phi,x,sigma)* e*x) ...
-        - phi/mu(phi,x) * x * AA(1,2) * (-K_c*sigma*phi - xi(phi,x,sigma)*e*(1-x));
+    F1 = @(phi,x,sigma) -phi/mu(phi,x) * x * AA(1,1) * (Kc*sigma*x + e(x,sigma)*x) ...
+        - phi/mu(phi,x) * x * AA(1,2) * (Kc*sigma*(1-x) + e(x,sigma)*(1-x));
+    G1 = @(phi,x,sigma) -phi/mu(phi,x) * x * AA(1,1) * (-Kc*sigma*phi -xi(phi,x,sigma)* e(x,sigma)*x) ...
+        - phi/mu(phi,x) * x * AA(1,2) * (-Kc*sigma*phi - xi(phi,x,sigma)*e(x,sigma)*(1-x));
     H1 = @(phi,x) -phi/mu(phi,x) * x * AA(1,1)*(phi*x*(-1 - phi*A.rhos)) ...
-        - phi/mu(phi,x)*x*A(1,2)*(phi*(1-x)*(-1 - phi*A.rhos));
-    F2 = @(phi,x,sigma) -phi/mu(phi,x) * (1-x) * AA(1,1) * (K_c*sigma*x + e*x) ...
-        - phi/mu(phi,x) * (1-x) * AA(1,2) * (K_c*sigma*(1-x) + e*(1-x));
-    G2 = @(phi,x,sigma) -phi/mu(phi,x) * (1-x) * AA(1,1) * (-K_c*sigma*phi -xi(phi,x,sigma)* e*x) ...
-        - phi/mu(phi,x) * (1-x) * AA(1,2) * (-K_c*sigma*phi - xi(phi,x,sigma)*e*(1-x));
+        - phi/mu(phi,x)*x*AA(1,2)*(phi*(1-x)*(-1 - phi*A.rhos));
+    F2 = @(phi,x,sigma) -phi/mu(phi,x) * (1-x) * AA(1,1) * (Kc*sigma*x + e(x,sigma)*x) ...
+        - phi/mu(phi,x) * (1-x) * AA(1,2) * (Kc*sigma*(1-x) + e(x,sigma)*(1-x));
+    G2 = @(phi,x,sigma) -phi/mu(phi,x) * (1-x) * AA(1,1) * (-Kc*sigma*phi -xi(phi,x,sigma)* e(x,sigma)*x) ...
+        - phi/mu(phi,x) * (1-x) * AA(1,2) * (-Kc*sigma*phi - xi(phi,x,sigma)*e(x,sigma)*(1-x));
     H2 = @(phi,x) -phi/mu(phi,x) * (1-x) * AA(1,1)*(phi*x*(-1 - phi*A.rhos)) ...
-        - phi/mu(phi,x)*(1-x)*A(1,2)*(phi*(1-x)*(-1 - phi*A.rhos));
-    J1 = @(phi,x) X*phi / (phi_m(phi,x) - (1-x)*phi^2);
-    K1 = @(phi,x) -A.d1^2 * cot(A.alpha)*phi*x / 9 * (1 - phi/phi_m(phi,x))*(A.rho - A.rholiq);
-    J2 = @(phi,x) (1-X)*phi / (phi_m(phi,x) - x*phi^2);
-    K2 = @(phi,x) -A.d2^2 *2* cot(A.alpha)*phi*(1-x) / 9 * (1 - phi/phi_m(phi,x))*(A.rho - A.rholiq);
+        - phi/mu(phi,x)*(1-x)*AA(1,2)*(phi*(1-x)*(-1 - phi*A.rhos));
+    J1 = @(phi,x) x*phi / (phi_m(phi,x) - (1-x)*phi^2);
+    K1 = @(phi,x) -A.d1^2 * cot(A.alpha)*phi*x / 9 * (1 - phi/phi_m(phi,x))*(A.rhos);
+    J2 = @(phi,x) (1-x)*phi / (phi_m(phi,x) - x*phi^2);
+    K2 = @(phi,x) -A.d2^2 *2* cot(A.alpha)*phi*(1-x) / 9 * (1 - phi/phi_m(phi,x))*(A.rhos);
     
     %Almost there, these are the big blocks
-    L = @(phi,x,sigma) F1(phi,x,sigma) + DD11*x + J1(phi,x)*DD11*x;
-    M = @(phi,x,sigma) G1(phi,x,sigma) + DD11*phi + J1(phi,x)*DD11*x;
+    L = @(phi,x,sigma) F1(phi,x,sigma) + DD11(phi,x)*x + J1(phi,x)*DD11(phi,x)*(1-x);
+    M = @(phi,x,sigma) G1(phi,x,sigma) + DD11(phi,x)*phi + J1(phi,x)*DD11(phi,x)*x;
     P = @(phi,x) -H1(phi,x) - K1(phi,sigma);
-    N = @(phi,x,sigma) F2(phi,x,sigma) + DD22*J2(phi,x)*x + DD22*x;
-    O = @(phi,x,sigma) G2(phi,x,sigma) + DD22*J2(phi,x)*x - DD22*x;
+    N = @(phi,x,sigma) F2(phi,x,sigma) + DD22(phi,x)*J2(phi,x)*x + DD22(phi,x)*(1-x);
+    O = @(phi,x,sigma) G2(phi,x,sigma) + DD22(phi,x)*J2(phi,x)*x - DD22(phi,x)*x;
     Q = @(phi,x) -H2(phi,x) - K2(phi,sigma);
     
     

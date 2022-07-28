@@ -33,15 +33,16 @@ else
     Kv = A.Kv;
     %Construct AA, matrix for drift
     AA = zeros(2,2);
-    AA(1,1) = 1/4*A.d1^2;
-    AA(2,2) = 1/4*A.d2^2;
-    AA(1,2) = 1/4 * (A.d1 + A.d2)^2 / 2^(d+1) * (1 + A.d1/A.d2)^d / ...
+    AA(1,1) = 1/4;
+    AA(2,2) = 1/4;
+    AA(1,2) = 1/4 * 1/(A.d1^2) * (A.d1 + A.d2)^2 / 2^(d+1) * (1 + A.d1/A.d2)^d / ...
         (1 + (A.d1/A.d2)^d);
-    AA(2,1) = AA(1,2);
+    AA(2,1) = 1/4 * 1/(A.d2^2) * (A.d2 + A.d1)^2 / 2^(d+1) * (1 + A.d2/A.d1)^d / ...
+        (1 + (A.d2/A.d1)^d);
     %Construct DD, matrix for tracer.  These are functions in phi and x
     kb = 1.380649 * (10^-23); %Boltzman constant in m^2 kg / s^2 K
-    D1 = kb * 293 / (3 * pi * A.nul * A.rholiq*A.d1);%Assume room temp = 293K
-    D2 = kb * 293 / (3 * pi * A.nul * A.rholiq*A.d2);%Assume room temp = 293K 
+    D1 = 1/A.d1^2 * kb * 293 / (3 * pi * A.nul * A.rholiq*A.d1);%Assume room temp = 293K
+    D2 = 1/A.d2^2 * kb * 293 / (3 * pi * A.nul * A.rholiq*A.d2);%Assume room temp = 293K 
     DD11 = @(phi,x) Kd * D1 * 1/S(phi,x);
     DD22 = @(phi,x) Kd * D2 * 1/S(phi,x);
     DD12 = @(phi,x) DD11 * phi * x / (phi_m(phi,x) - phi*(1-x))^2;
@@ -64,9 +65,9 @@ else
     H2 = @(phi,x) -phi/mu(phi,x) * (1-x) * AA(1,1)*(phi*x*(-1 - phi*A.rhos)) ...
         - phi/mu(phi,x)*(1-x)*AA(1,2)*(phi*(1-x)*(-1 - phi*A.rhos));
     J1 = @(phi,x) x*phi / (phi_m(phi,x) - (1-x)*phi^2);
-    K1 = @(phi,x) -A.d1^2 * cot(A.alpha)*phi*x / 9 * (1 - phi/phi_m(phi,x))*(A.rhos);
+    K1 = @(phi,x) -1 * 2 * cot(A.alpha)*phi*x / 9 * (1 - phi/phi_m(phi,x))*(A.rhos);
     J2 = @(phi,x) (1-x)*phi / (phi_m(phi,x) - x*phi^2);
-    K2 = @(phi,x) -A.d2^2 *2* cot(A.alpha)*phi*(1-x) / 9 * (1 - phi/phi_m(phi,x))*(A.rhos);
+    K2 = @(phi,x) -1 *2* cot(A.alpha)*phi*(1-x) / 9 * (1 - phi/phi_m(phi,x))*(A.rhos);
     
     %Almost there, these are the big blocks
     L = @(phi,x,sigma) F1(phi,x,sigma) + DD11(phi,x)*x + J1(phi,x)*DD11(phi,x)*(1-x);

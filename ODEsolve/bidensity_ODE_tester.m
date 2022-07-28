@@ -1,8 +1,8 @@
 A = set_constants2(30);
 
-phi0 = 0.5;
-X0 = 0.01;
-p0 = [0.51 0.01];
+phi0 = 0.3;
+X0 = 0.25;
+p0 = [0.3 0.25];
 
 %Solve ODE
 sol = solve_bidensity_ODE(phi0,X0,p0,A);

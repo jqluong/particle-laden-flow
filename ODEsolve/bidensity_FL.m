@@ -40,18 +40,17 @@ else
     AA(2,1) = 1/4 * 1/(A.d2^2) * (A.d2 + A.d1)^2 / 2^(d+1) * (1 + A.d2/A.d1)^d / ...
         (1 + (A.d2/A.d1)^d);
     %Construct DD, matrix for tracer.  These are functions in phi and x
-    kb = 1.380649 * (10^-23); %Boltzman constant in m^2 kg / s^2 K
-    D1 = 1/A.d1^2 * kb * 293 / (3 * pi * A.nul * A.rholiq*A.d1);%Assume room temp = 293K
-    D2 = 1/A.d2^2 * kb * 293 / (3 * pi * A.nul * A.rholiq*A.d2);%Assume room temp = 293K 
-    DD11 = @(phi,x) Kd * D1 * 1/S(phi,x);
-    DD22 = @(phi,x) Kd * D2 * 1/S(phi,x);
-    DD12 = @(phi,x) DD11 * phi * x / (phi_m(phi,x) - phi*(1-x))^2;
-    DD21 = @(phi,x) DD22 * phi * (1-x) / (phi_m(phi,x) - phi*x)^2;
+    phi_tr = 0.4;
+    mu = @(phi,x) (1 - phi/phi_m(phi,x))^-2;
+    Dtr = @(phi) 1/2*min(phi^2,phi_tr^2);
+    DD11 = @(phi,x,sigma) sigma/mu(phi,x) * 1/4 * Dtr(phi);
+    DD22 = @(phi,x,sigma) sigma/mu(phi,x) * 1/4 * Dtr(phi);
+    %DD12 = @(phi,x) DD11 * phi * x / (phi_m(phi,x) - phi*(1-x))^2;
+    %DD21 = @(phi,x) DD22 * phi * (1-x) / (phi_m(phi,x) - phi*x)^2;
     
     %Build blocks for ODE
     e = @(x,sigma) 2*(Kc - Kv)*sigma*phi;
     xi = @(phi,x,sigma) phi/phi_m(phi,x) * (phi_m(phi,x) - A.phimax*(3 - 5*x))/(2*x*(1-x));
-    mu = @(phi,x) (1 - phi/phi_m(phi,x))^2;
     F1 = @(phi,x,sigma) -phi/mu(phi,x) * x * AA(1,1) * (Kc*sigma*x + e(x,sigma)*x) ...
         - phi/mu(phi,x) * x * AA(1,2) * (Kc*sigma*(1-x) + e(x,sigma)*(1-x));
     G1 = @(phi,x,sigma) -phi/mu(phi,x) * x * AA(1,1) * (-Kc*sigma*phi -xi(phi,x,sigma)* e(x,sigma)*x) ...
@@ -64,17 +63,17 @@ else
         - phi/mu(phi,x) * (1-x) * AA(1,2) * (-Kc*sigma*phi - xi(phi,x,sigma)*e(x,sigma)*(1-x));
     H2 = @(phi,x) -phi/mu(phi,x) * (1-x) * AA(1,1)*(phi*x*(-1 - phi*A.rhos)) ...
         - phi/mu(phi,x)*(1-x)*AA(1,2)*(phi*(1-x)*(-1 - phi*A.rhos));
-    J1 = @(phi,x) x*phi / (phi_m(phi,x) - (1-x)*phi^2);
+    J1 = @(phi,x) x*phi / (phi_m(phi,x) - (1-x)*phi)^2;
     K1 = @(phi,x) -1 * 2 * cot(A.alpha)*phi*x / 9 * (1 - phi/phi_m(phi,x))*(A.rhos);
-    J2 = @(phi,x) (1-x)*phi / (phi_m(phi,x) - x*phi^2);
+    J2 = @(phi,x) (1-x)*phi / (phi_m(phi,x) - x*phi)^2;
     K2 = @(phi,x) -1 *2* cot(A.alpha)*phi*(1-x) / 9 * (1 - phi/phi_m(phi,x))*(A.rhos);
     
     %Almost there, these are the big blocks
-    L = @(phi,x,sigma) F1(phi,x,sigma) + DD11(phi,x)*x + J1(phi,x)*DD11(phi,x)*(1-x);
-    M = @(phi,x,sigma) G1(phi,x,sigma) + DD11(phi,x)*phi + J1(phi,x)*DD11(phi,x)*x;
+    L = @(phi,x,sigma) F1(phi,x,sigma) + DD11(phi,x,sigma)*x + J1(phi,x)*DD11(phi,x,sigma)*(1-x);
+    M = @(phi,x,sigma) G1(phi,x,sigma) + DD11(phi,x,sigma)*phi + J1(phi,x)*DD11(phi,x,sigma)*x;
     P = @(phi,x) -H1(phi,x) - K1(phi,sigma);
-    N = @(phi,x,sigma) F2(phi,x,sigma) + DD22(phi,x)*J2(phi,x)*x + DD22(phi,x)*(1-x);
-    O = @(phi,x,sigma) G2(phi,x,sigma) + DD22(phi,x)*J2(phi,x)*x - DD22(phi,x)*x;
+    N = @(phi,x,sigma) F2(phi,x,sigma) + DD22(phi,x,sigma)*J2(phi,x)*x + DD22(phi,x,sigma)*(1-x);
+    O = @(phi,x,sigma) G2(phi,x,sigma) + DD22(phi,x,sigma)*J2(phi,x)*x - DD22(phi,x,sigma)*x;
     Q = @(phi,x) -H2(phi,x) - K2(phi,sigma);
     
     

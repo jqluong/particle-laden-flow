@@ -81,7 +81,7 @@ else
     k = 0; max_k = 20;
     while(~sol_found  && k < max_k)
         k = k + 1;
-        [Y,it] = nlsolve_broyden(p,@euler,2,tol,bounds,A.max_it,pars);
+        [Y,it] = nlsolve_broyden(p,@fwd_shoot,2,tol,bounds,A.max_it,pars);
         if(it==-1 || it>=A.max_it) %solver failure
             %try a new guess?
             if(k==max_k) %this isn't attempted

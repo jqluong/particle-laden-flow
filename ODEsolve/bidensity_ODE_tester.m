@@ -12,7 +12,12 @@ sigma = sol.sigma;
 T = sol.T;
 figure(1)
 clf
-plot(Z,phi,'-k',Z,X,'-r');
+plot(Z,phi,'-k','LineWidth',1.5);
+title("\phi v. Z")
+
+figure
+plot(Z,X,'-r','LineWidth',1.5);
+title("\chi v. Z")
 Zt = Z(Z < T);
 Xt = X(Z < T);
 %figure(2)

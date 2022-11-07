@@ -1,10 +1,9 @@
 A = set_constants2(30);
 
-phi0 = 0.3;
-X0 = 0.25;
-p0 = [0.3 0.25];
+phi0 = 0.5;
+X0 = 0.75;
+p0 = [0.4 -6];
 
-%Solve ODE
 sol = solve_bidensity_ODE(phi0,X0,p0,A);
 Z = sol.Z;
 X = sol.X;
@@ -14,12 +13,17 @@ T = sol.T;
 figure(1)
 clf
 plot(Z,phi,'-k',Z,X,'-r');
-title('phi v. Z')
 Zt = Z(Z < T);
 Xt = X(Z < T);
-figure(2)
-clf
+%figure(2)
+%clf
 %subplot(1,2,1)
 %plot(Z,log(X),'-k');
 %subplot(1,2,2)
-plot(T-Zt,(T-Zt).*log(1-Xt),'.-k');
+%plot(T-Zt,(T-Zt).*log(1-Xt),'.-k');
+figure
+hold on
+plot(Z,phi.*X,'LineWidth', 1.5, 'Color', "red")
+plot(Z,phi.*(1-X),'LineWidth', 1.5, 'Color', "blue")
+legend("Species 1", "Species 2")
+hold off

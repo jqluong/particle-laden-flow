@@ -40,7 +40,7 @@ if(p0(1) < 0 || p0(1) > A.phimax)
     p0(1) = A.phimax/2;
 end
 
-if(p0(2) > 0) %Change to SLX = log(X)/gamma
+if(p0(2) > 0)
     p0(2) = log(p0(2))/A.gamma;
 end
 
@@ -78,10 +78,10 @@ else
     bounds = [0 A.phimax; -Inf 0];
 
     p = p0;
-    k = 0; max_k = 20;
+    k = 0; max_k = 3;
     while(~sol_found  && k < max_k)
         k = k + 1;
-        [Y,it] = nlsolve_broyden(p,@euler,2,tol,bounds,A.max_it,pars);
+        [Y,it] = nlsolve_broyden(p,@fwd_shoot,2,tol,bounds,A.max_it,pars);
         if(it==-1 || it>=A.max_it) %solver failure
             %try a new guess?
             if(k==max_k) %this isn't attempted

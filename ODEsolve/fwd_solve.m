@@ -21,9 +21,9 @@ phi = Y(:,1); sigma = Y(:,3);
 X = exp(A.gamma*Y(:,2));
 
 T1 = Z(end);
-G = [sigma(end) - (1-T1); trapz(Z,phi) - phi0];
+G = [sigma(end) - (1-T1); trapz(Z,X.*phi)/phi0 - X0];
 
 %Heuristic fix for shooting
-if(phi(end) > A.phimax/2 && T1 < 1)
-    G(2) = G(2) + A.phimax*(1-T1);
-end
+%if(phi(end) > A.phimax/2 && T1 < 1)
+%    G(2) = G(2) + A.phimax*(1-T1);
+%end

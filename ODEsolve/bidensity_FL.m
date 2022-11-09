@@ -16,23 +16,25 @@ d = 3; %Physical Dimension of system
 rhoX = A.rhos;
 
 %Auxillary functions
-
-
-
-
 b = abs(A.d1 - A.d2 / (A.d1 + A.d2));
 phi_m = A.phimax * (1 + 3/2 * b^(3/2) * (X)^3/2 * (1 - X));
 mu = (1 - phi/phi_m)^-2;
 phi_tr = 0.4;
 D_tr = 1/2*min(phi^2,phi_tr^2);
+Kc = A.Kc;
+Kv = A.Kv;
+tol = 0.001; %tol on how close to 0/1 we're willing to get
+
 if(phi >= phimax || phi<= 0) %Degenerate case,
     dphi = 0;
-    dsLX = 0; 
+    dsLX = 0;
+elseif (abs(X - 0) < tol || abs(X - 1) < tol) %X = 0,1 solve ODE in 1 species 
+    dphi = 1/sigma * (1 + 2*(Kv - Kc)/Kc * phi/(phi_m - phi))^-1 ...
+        *( (1 + rhoX*phi)*phi - 2*rhoX*cot(A.alpha)/(9*Kc) * (1-phi));
+    dsLX = 0;
 else 
     %There's a bunch of terms to build up to create the ODEs
     %Diffusion type coefficient matrices
-    Kc = A.Kc;
-    Kv = A.Kv;
     %Construct AA, matrix for drift
     %Implicitly divide out a d1^2 in the first row and a d2^2 in the second
     AA = zeros(2,2);

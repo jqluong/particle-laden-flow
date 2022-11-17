@@ -1,7 +1,7 @@
 A = set_constants2(30);
 
-phi0 = 0.5;
-X0 = 0.75;
+phi0 = 0.3;
+X0 = 0.25;
 p0 = [phi0/2 X0/2];  %Initial guess good enough to be phi0 and X0 for now
 
 %Solve ODE

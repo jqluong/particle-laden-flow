@@ -1,8 +1,8 @@
 A = set_constants2(30); %This is where you change the angle
 
-phi0 = 0.3;
-X0 = 0.25;
-p0 = [phi0/2 X0/2];  %Initial guess good enough to be phi0 and X0 for now
+phi0 = 0.5;
+X0 = 0.5;
+p0 = [phi0 X0];  %Initial guess good enough to be phi0 and X0 for now
 
 %Solve ODE
 sol = solve_bidensity_ODE(phi0,X0,p0,A);

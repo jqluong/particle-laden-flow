@@ -1,4 +1,4 @@
-A = set_constants2(30);
+A = set_constants2(30); %This is where you change the angle
 
 phi0 = 0.3;
 X0 = 0.25;

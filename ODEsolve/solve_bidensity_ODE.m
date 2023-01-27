@@ -41,7 +41,7 @@ if(p0(1) < 0 || p0(1) > A.phimax)
 end
 
 if(p0(2) > 0) %Change to SLX = log(X)/gamma
-    p0(2) = log(p0(2))/A.gamma;
+    %p0(2) = log(p0(2))/A.gamma;
 end
 
 sol_found = 0;
@@ -70,12 +70,12 @@ else
     A.vopt.Events = phi_e; %Stopping criterion
     %Ensure X-guess is not zero or one
     if(p0(2)==0 || p0(2)==1 || p0(2) == -Inf)
-          p0(2) = -1;
+          p0(2) = 1/2;
     end
     
     %F = @(Y) fwd_shoot(Y,phi0,X0,A);
     pars = {phi0,X0,A}; %paramters for the shooting function
-    bounds = [0 A.phimax; -Inf 0];
+    bounds = [0 A.phimax; 0 1];
 
     p = [p0];
     k = 0; max_k = 20;
@@ -85,11 +85,11 @@ else
         if(it==-1 || it>=A.max_it) %solver failure
             %try a new guess?
             if(k==max_k) %this isn't attempted
-                p = [0.5 log(0.5)]';
+                p = [0.5 0.5];
             else
                 xi = 0.05;
                 p(1) = p(1) + xi*(A.phimax - p(1));
-                p(2) = max(0.9*p(2),-50);
+                p(2) = max(0.9*p(2),.5); %idk here
             end
                 %...could try something else here
         else 

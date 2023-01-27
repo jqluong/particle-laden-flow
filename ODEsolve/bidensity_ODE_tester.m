@@ -1,7 +1,8 @@
+clear all
 A = set_constants2(30); %This is where you change the angle
 
 phi0 = 0.5;
-X0 = 0.5;
+X0 = 0.55;
 p0 = [phi0 X0];  %Initial guess good enough to be phi0 and X0 for now
 
 %Solve ODE

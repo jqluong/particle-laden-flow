@@ -10,7 +10,7 @@ s = Y0(1); t = Y0(2);
 [Z,Y] = A.ODEsolve(ffL,[0 1],[s t 1+(A.rhos)*phi0],A.vopt);
 
 phi= Y(:,1); 
-X = exp(Y(:,2)*A.gamma);
+X = Y(:,2);%exp(Y(:,2)*A.gamma);
 sigma = Y(:,3);
 
 T1 = Z(end); %as it turns out nothing depends on X0, so force check

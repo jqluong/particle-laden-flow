@@ -9,7 +9,8 @@ function dF= bidensity_FL(~,y,A) %first parameter is time
 phimax = A.phimax; gamma = A.gamma;
 phi= y(1);
 %sLX = y(2);
-X = exp(y(2)*gamma); %We work with normal X in this ODE, and convert back
+X = y(2);
+%X = exp(y(2)*gamma); %We work with normal X in this ODE, and convert back
 sigma= y(3);
 d = 3; %Physical Dimension of system
 
@@ -26,7 +27,7 @@ Kv = A.Kv;
 tol = 1e-4; %tol on how close to 0/1 we're willing to get
 alpha = A.alpha;
 
-if(phi >= phimax || abs(phi) <= tol || phi <= 0) %Degenerate case,
+if(phi >= phi_m || abs(phi) <= tol || phi <= 0) %Degenerate case,
     dphi = 0;
     dsLX = 0;
 elseif (abs(X - 0) < tol || abs(X - 1) < tol) %X = 0,1 solve ODE in 1 species 
@@ -42,7 +43,7 @@ else
     xi = phi/phi_m * (phi_m - A.phimax*(3 - 5*X))/(2*X*(1-X));    
     %Time to actually make the ODEs
     num_1 = (-16/9*cot(alpha)*rhoX*(1 - phi) + phi*(1+phi*rhoX))*(phi_m - phi);
-    num_2 = 2*phi*xi*(8/9*cot(alpha)*rhoX*(1-phi)*(2*X-1))/(Kc*phi+D_tr);
+    num_2 = 2*xi*(8/9*cot(alpha)*rhoX*(1-phi)*(2*X-1))/(Kc+(D_tr/phi));
     den = Kc*sigma*(phi_m - phi) + 2*phi*sigma*(Kv - Kv);
     dphi = (num_1 + num_2)/(den);
     
@@ -51,7 +52,7 @@ else
     else
         num_X = 8/9*cot(alpha)*rhoX*(1-phi)*(2*X - 1);
         den_X = sigma*(Kc*phi + D_tr);
-        dsLX = num_X/den_X * (1/(X*gamma));
+        dsLX = num_X/den_X;
         %dsLX = v(2)/(X*gamma);
     end
 end

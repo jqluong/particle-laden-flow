@@ -30,10 +30,10 @@ alpha = A.alpha;
 if(abs(phi) <= tol || phi <= 0) %Degenerate case phi >= phi_m + tol || ,
     dphi = 0;
     dsLX = 0;
-elseif (abs(X - 0) < tol || abs(X - 1) < tol) %X = 0,1 solve ODE in 1 species 
-    dphi = 1/sigma * (1 + 2*(Kv - Kc)/Kc * phi/(phi_m - phi))^-1 ...
-        *( (1 + rhoX*phi)*phi - 2*rhoX*cot(A.alpha)/(9*Kc) * (1-phi));
-    dsLX = 0;
+%elseif (abs(X - 0) < tol || abs(X - 1) < tol) %X = 0,1 solve ODE in 1 species 
+    %dphi = 1/sigma * (1 + 2*(Kv - Kc)/Kc * phi/(phi_m - phi))^-1 ...
+        %*( (1 + rhoX*phi)*phi - 2*rhoX*cot(A.alpha)/(9*Kc) * (1-phi));
+    %dsLX = 0;
 else 
     %There's a bunch of terms to build up to create the ODEs
     %Diffusion type coefficient matrices

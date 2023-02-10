@@ -66,8 +66,7 @@ if(X0==0 || X0==1)
 else
     % Two species case
     
-    phi_e = @(~,y) phi_event(0,y,A);
-    A.vopt.Events = phi_e; %Stopping criterion
+
     %Ensure X-guess is not zero or one
     if(p0(2)==0 || p0(2)==1 || p0(2) == -Inf)
           p0(2) = 1/2;
@@ -75,11 +74,13 @@ else
     
     %F = @(Y) fwd_shoot(Y,phi0,X0,A);
     pars = {phi0,X0,A}; %paramters for the shooting function
-    bounds = [0 A.phimax; 0 1];
+    bounds = [0 1; 0 1]; %phi isn't bounded by A.phim b/c phi_m function of chi
 
     p = [p0];
     k = 0; max_k = 20;
     while(~sol_found  && k < max_k)
+        phi_e = @(~,y) phi_event(0,y,A);
+        A.vopt.Events = phi_e; %Stopping criterion
         k = k + 1;
         [Y,it] = nlsolve_broyden(p,@fwd_shoot,length(p),tol,bounds,A.max_it,pars);
         if(it==-1 || it>=A.max_it) %solver failure

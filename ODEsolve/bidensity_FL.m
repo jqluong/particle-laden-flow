@@ -18,8 +18,8 @@ rhoX = A.rhos;
 
 %Auxillary functions and variables
 b = abs(A.d1 - A.d2 / (A.d1 + A.d2));
-phi_m = A.phimax * (1 + 3/2 * b^(3/2) * (X)^3/2 * (1 - X));
-mu = (1 - phi/phi_m)^-2; %mu gets cancelled out in equations
+phi_m = phimax * (1 + 3/2 * b^(3/2) * (X)^3/2 * (1 - X));
+%mu = (1 - phi/phi_m)^-2; %mu gets cancelled out in equations
 phi_tr = 0.4;
 D_tr = 1/2*min(phi^2,phi_tr^2);
 Kc = A.Kc;
@@ -27,7 +27,7 @@ Kv = A.Kv;
 tol = 1e-4; %tol on how close to 0/1 we're willing to get
 alpha = A.alpha;
 
-if(phi >= phi_m || abs(phi) <= tol || phi <= 0) %Degenerate case,
+if(abs(phi) <= tol || phi <= 0) %Degenerate case phi >= phi_m + tol || ,
     dphi = 0;
     dsLX = 0;
 elseif (abs(X - 0) < tol || abs(X - 1) < tol) %X = 0,1 solve ODE in 1 species 
@@ -40,11 +40,11 @@ else
     %Construct AA, matrix for drift
     %Implicitly divide out a d1^2 in the first row and a d2^2 in the second
     %Construct G, matrix to invert
-    xi = phi/phi_m * (phi_m - A.phimax*(3 - 5*X))/(2*X*(1-X));    
+    xi = phi/phi_m * (phi_m - A.phimax)*(3 - 5*X)/(2*X*(1-X));    
     %Time to actually make the ODEs
     num_1 = (-16/9*cot(alpha)*rhoX*(1 - phi) + phi*(1+phi*rhoX))*(phi_m - phi);
     num_2 = 2*xi*(8/9*cot(alpha)*rhoX*(1-phi)*(2*X-1))/(Kc+(D_tr/phi));
-    den = Kc*sigma*(phi_m - phi) + 2*phi*sigma*(Kv - Kv);
+    den = Kc*sigma*(phi_m - phi) + 2*phi*sigma*(Kv - Kc);
     dphi = (num_1 + num_2)/(den);
     
     if(X<=0 || X>=1) 

@@ -18,7 +18,7 @@ rhoX = A.rhos;
 %Auxillary functions
 b = abs(A.d1 - A.d2 / (A.d1 + A.d2));
 phi_m = A.phimax * (1 + 3/2 * b^(3/2) * (X)^3/2 * (1 - X));
-mu = (1 - phi/phi_m)^-2;
+%mu = (1 - phi/phi_m)^-2;
 phi_tr = 0.4;
 D_tr = 1/2*min(phi^2,phi_tr^2);
 Kc = A.Kc;
@@ -45,15 +45,15 @@ else
     AA(2,1) = 1/4 * (A.d1 + A.d2)^2 / 2^(d+1) * (1 + A.d1/A.d2)^d / ...
         (1 + (A.d1/A.d2)^d) * 1/(A.d2^2); 
     %Construct G, matrix to invert
-    xi = phi/phi_m * (phi_m - A.phimax*(3 - 5*X))/(2*X*(1-X));
-    g = Kc*(sigma - phi*sigma*2*(phi-phi_m)^-1) + ...
+    xi = phi/phi_m * (phi_m - A.phimax)*(3 - 5*X)/(2*X*(1-X));
+    g = Kc*(sigma - phi*sigma*2*(phi_m-phi)^-1) + ...
         Kv*sigma*phi*2*(phi_m - phi)^-1;
-    h1 = Kc*(sigma*phi + phi*X*sigma*2*xi*(phi - phi_m)^-1); 
-    h2 = Kc*(-sigma*phi + phi*(1-X)*sigma*2*xi*(phi - phi_m)^-1); 
+    h1 = Kc*(sigma*phi + phi*X*sigma*2*xi*(phi_m - phi)^-1); 
+    h2 = Kc*(-sigma*phi + phi*(1-X)*sigma*2*xi*(phi_m - phi)^-1); 
     G = -[X*g h1 ; (1-X)*g h2];
-    L = -1/4*sigma*D_tr*[X phi;(1-X)  -phi]; %Represents tracer
+    L = -1/4*sigma*D_tr*phi*[0 1;0 -1]; %Represents tracer
     %Form ODE
-    grav = -2*cot(A.alpha)/9 * (1 - phi)*rhoX*[phi*X; (1-X)*phi];
+    grav = 2*cot(A.alpha)/9 * (1 - phi)*rhoX*[phi*X; (1-X)*phi];
     v = ( diag([phi*X, (1-phi)*X])*AA*G+L)^-1 * (grav ...
         + diag([phi*X, (1-phi)*X])*AA*[phi*X*(-1-phi*rhoX) ; phi*(1-X)*(-1-phi*rhoX)] ); 
     

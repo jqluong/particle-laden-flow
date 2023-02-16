@@ -43,3 +43,7 @@ hold off
 %figure
 %plot(Z,sigma, 'LineWidth', 1.5)
 %title("\sigma v. z for \phi_0: " + phi0 + " and \chi_0: " + X0 + " and \alpha: " + A.ang)
+
+%Display error
+trapz(Z,phi)
+trapz(Z,X.*phi)/phi0

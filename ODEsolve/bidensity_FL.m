@@ -8,8 +8,8 @@ function dF= bidensity_FL(~,y,A) %first parameter is time
 
 phimax = A.phimax; gamma = A.gamma;
 phi= y(1);
-%sLX = y(2);
-X = exp(y(2)*gamma);
+X = y(2);
+%X = exp(y(2)*gamma);
 sigma= y(3);
 d = 3; %Physical Dimension of system
 
@@ -25,7 +25,7 @@ Kc = A.Kc;
 Kv = A.Kv;
 tol = 1e-4; %tol on how close to 0/1 we're willing to get
 
-if(phi >= phimax || abs(phi) <= tol || phi <= 0) %Degenerate case,
+if(abs(phi) <= tol || phi <= 0) %Degenerate case,phi >= phimax || 
     dphi = 0;
     dsLX = 0;
 elseif (abs(X - 0) < tol || abs(X - 1) < tol) %X = 0,1 solve ODE in 1 species 
@@ -66,7 +66,7 @@ else
     else
        %dsLX = 1/gamma*1/X*(L(phi,X,sigma)*Q(phi,X) - P(phi,X)*N(phi,X,sigma)) ...
         %/(-M(phi,X,sigma)*N(phi,X,sigma) + L(phi,X,sigma)*O(phi,X,sigma));
-        dsLX = v(2)/(X*gamma);
+        dsLX = v(2);
     end
 end
 

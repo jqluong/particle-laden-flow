@@ -28,7 +28,7 @@ tol = 1e-4; %tol on how close to 0/1 we're willing to get
 alpha = A.alpha; %Already given in radians
 
 dsigma= -1-rhoX*phi;
-if( phi >= phi_m + tol || abs(phi) <= tol || phi <= 0) %Degenerate case ,
+if(abs(phi) <= tol || phi <= 0) %Degenerate case ,  phi >= phi_m + tol || 
     dphi = 0;
     dsLX = 0;
 elseif (abs(X - 0) < tol || abs(X - 1) < tol) %X = 0,1 solve ODE in 1 species 

@@ -39,8 +39,8 @@ else
     %There's a bunch of terms to build up to create the ODEs
     %Diffusion type coefficient matrices
     %Construct AA, matrix for drift
-    d1 = A.d1;
-    d2 = A.d2;
+    d1 = A.d1 * 10^8;
+    d2 = A.d2 * 10^8;
     a = (d1 + d2)^2 /2^(d+1) * (d1+d2)^d/(d1^d + d2^d);
     detA = d1^2 * d2^2 - a^2;
     %Construct G, matrix to invert
@@ -61,7 +61,7 @@ else
     num_phi1 = (X + a/d2^2*(1-X))*h1 + ((1-X) + a/d1^2*X)*h2;
     num_phi2 = 8/9*cot(alpha)*rhoX*(1-phi) + ...
         phi*dsigma*(X^2 + a*(1/d1^2 + 1/d2^2)*X*(1-X) + (1-X)^2);
-    dphi = -(num_phi1*dsLX + num_phi2)/(g*den_phi);
+    dphi = -(num_phi1*dsLX + num_phi2*(phi_m - phi))/(g*den_phi);
 end
 
 

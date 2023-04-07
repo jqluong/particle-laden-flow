@@ -24,7 +24,7 @@ phi_tr = 0.4;
 D_tr = 1/2*min(phi^2,phi_tr^2);
 Kc = A.Kc;
 Kv = A.Kv;
-tol = 1e-7; %tol on how close to 0/1 we're willing to get
+tol = 1e-4; %tol on how close to 0/1 we're willing to get
 alpha = A.alpha; %Already given in radians
 
 dsigma= -1-rhoX*phi;
@@ -50,7 +50,7 @@ else
     den_X1 = detA*Kc*phi*X*(1-X);
     den_X1 = den_X1 + D_tr*(d1^2*d2^2*(1-X)^2+a*(d1^2+d2^2)*(1-X)*X+d1^2*d2^2*X^2);
     num_X = ((2*X-1)*d1^2*d2^2 + a*(d1^2 - (d1^2 + d2^2)*X));
-    dsLX = 8*cot(alpha)/9 * rhoX*((1-phi)*(1-X)*X*num_X) /(sigma*den_X1);
+    dsLX = 2*cot(alpha)/9 * rhoX*((1-phi)*(1-X)*X*num_X) /(sigma*den_X1);
     %dsLX = v(2)/(X*gamma);
     
     %phi'
@@ -59,8 +59,8 @@ else
     h2 = Kc*(-phi*sigma*(phi_m-phi) + phi*(1-X)*sigma*xi);
     den_phi = (X^2 + a*(1/d1^2 + 1/d2^2)*X*(1-X) + (1-X)^2);
     num_phi1 = (X + a/d2^2*(1-X))*h1 + ((1-X) + a/d1^2*X)*h2;
-    num_phi2 = 8/9*cot(alpha)*rhoX*(1-phi) + ...
-        phi*dsigma*(X^2 + a*(1/d1^2 + 1/d2^2)*X*(1-X) + (1-X)^2);
+    num_phi2 = 2/9*cot(alpha)*rhoX*(1-phi) + ...
+        phi*dsigma*Kc*(X^2 + a*(1/d1^2 + 1/d2^2)*X*(1-X) + (1-X)^2);
     dphi = -(num_phi1*dsLX + num_phi2*(phi_m - phi))/(g*den_phi);
 end
 

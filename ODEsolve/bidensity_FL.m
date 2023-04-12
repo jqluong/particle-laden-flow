@@ -24,7 +24,7 @@ phi_tr = 0.4;
 D_tr = 1/2*min(phi^2,phi_tr^2);
 Kc = A.Kc;
 Kv = A.Kv;
-tol = 1e-4; %tol on how close to 0/1 we're willing to get
+tol = 1e-7; %tol on how close to 0/1 we're willing to get
 alpha = A.alpha; %Already given in radians
 
 dsigma= -1-rhoX*phi;

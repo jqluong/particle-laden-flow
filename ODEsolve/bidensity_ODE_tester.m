@@ -1,7 +1,7 @@
 clear all
 A = set_constants2(30); %This is where you change the angle
 
-phi0 = 0.2;
+phi0 = 0.6;
 X0 = 0.7;
 p0 = [phi0 X0];  %Initial guess good enough to be phi0 and X0 for now
 
@@ -33,6 +33,9 @@ title("\phi_1, \phi_2 v. z for phi_0: " + phi0 + " and \chi_0: " + X0 + " and \a
 xlabel("z")
 ylabel("\phi")
 hold off
+
+trapz(Z,phi)
+trapz(Z,X.*phi)/phi0
 % Zt = Z(Z < T);
 % Xt = X(Z < T);
 % figure(2)

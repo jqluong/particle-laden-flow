@@ -7,7 +7,7 @@ function G = fwd_shoot_1(s,phi0,X0,A)
 
 ff1 = @(z,Y) bidensity_F1(z,Y,X0,A);
 
-[Z,Y] = A.ODEsolve(ff1,[0 1],[s 1+(A.rhos2+ (A.rhos1-A.rhos2)*X0)*phi0],A.vopt);
+[Z,Y] = A.ODEsolve(ff1,[0 1],[s 1+(A.rhos)*phi0],A.vopt);
 
 sigma = Y(:,2);
 

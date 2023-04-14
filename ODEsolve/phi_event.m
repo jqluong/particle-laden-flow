@@ -1,7 +1,7 @@
 function [val,ist,dir] = phi_event(z,y,A)
 %stopping criteria for the bidensity ODE
 M = 1 + A.rhos*A.phimax;
-ep = 1e-4;
+ep = 1e-8;
 b = abs(A.d1 - A.d2 / (A.d1 + A.d2));
 X = y(2);
 phi_m = A.phimax * (1 + 3/2 * b^(3/2) * (X)^3/2 * (1 - X));

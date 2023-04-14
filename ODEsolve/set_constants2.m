@@ -34,7 +34,7 @@ end
 
 
     
-rhos = (rho-rholiq)/rholiq;
+rhos = (rho-rholiq)/rholiq; %Normalized density
     
 Kvisc=0.62; % shear induced migration constants
 
@@ -51,7 +51,7 @@ A.Dtr = @(phi) (phi <= phia)*Kt*phi.^2 + (phi > phia)*Kt*(phia)^2;
 
 
 c1   = 2*(Kvisc-Kcoll)/Kcoll;      % constant c1 in ode
-c2   = 2/(9*Kcoll*tan(alpha));     % constant c2 in ode
+c2   = 2/(9*Kcoll)*cot(alpha);     % constant c2 in ode
 %A.c0 = 2*(rhos2-rhos1)*cot(alpha)/9; %constant c0 in X' ODE (two species)
 A.c0 = 2*cot(alpha)/9; %%%%%%%THIS IS A PLACEHOLDER VALUE%%%%%%%%%%
 

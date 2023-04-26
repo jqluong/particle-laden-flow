@@ -71,6 +71,9 @@ A.dz = 0.0005; %Timestep for Euler Method
 A.d1 = d1; A.d2 = d2; A.rholiq = rholiq;
 A.phimax = phimax; 
 A.alpha = alpha; 
-A.c1 = c1; A.c2 = c2; 
+A.c1 = c1; A.c2 = c2;
+A.rho = rho; 
 A.rhos = rhos;
+A.rhos1 = rhos;
+A.rhos2 = rhos; %I am very lazy
 A.Kv = Kvisc; A.Kc = Kcoll; A.Kt = Kt; A.beta = beta;

@@ -8,12 +8,12 @@
 function bsol = bidisperse_PDE_exp(ang, phiL, XL, simulation_time, t_out, V_slurry, x_trans, run_name, override)
 
 %ang = 15;
-if(~override && exist([run_name,'.mat']))
+if(~override && exist(run_name + ".mat")     )
     fprintf('Using existing data.\n');
-    load([run_name,'.mat']);
+    load(run_name + ".mat");
     return
 end
-fname = ['ftable_',num2str(ang)];
+fname = ['ftableBD_',num2str(ang)]; %This is for changing the name (BD = bidisperse)
 %run_name = 'settled_15_ceramic_1'; %set this to a string to save the run
 %phiL = 0.3; XL = 0; %reservoir concentration
 
@@ -142,11 +142,12 @@ C_wm = (phiL*XL*A.rhos1 + phiL*(1-XL)*A.rhos2 + 1)/(1-phiL/A.phimax)^(-2);
 nul_eff_1 = A.nul*(1-phiL*XL/A.phimax)^(-2)/(phiL*XL*A.rhos1 + 1); 
 
 %effective fluid density (mixture of lighter particles and fluid)
-rho_fluid_eff_1 = (1-phiL*XL)*A.rholiq + phiL*XL*A.rhopart1;
+rho_fluid_eff_1 = (1-phiL*XL)*A.rholiq + phiL*XL*A.rho;
 
 %Compute the relevant ODE constants
 if(x_trans_2 > x_trans_1)
-    A2 = set_constants2(ang,A.rhopart1,A.rhopart2,rho_fluid_eff_1);
+    A2 = set_constants2(ang,A.d1,A.d2,A.rho,rho_fluid_eff_1);
+    %A2 = set_constants2(ang,A.rhopart1,A.rhopart2,rho_fluid_eff_1);
     A2.nul = nul_eff_1; %not actually used; added for completeness
     A2.phi_shift = phiL*XL; %adjustment for viscosity functions, etc. in ODE
     
@@ -232,10 +233,11 @@ while(t < tf - eps)
     a = dt/dx;
     
     set(0,'currentFigure',1);
-    plot(X,Y);
+    plot(X,Y,'LineWidth',2);
     title(sprintf('t = %5.2f s',t*t_dim));
+    legend("Fluid", "Species 1 (Larger)", "Species 2 (Smaller)")
     drawnow
-    
+
     %Y(1,:) = Y(1,:); %no change on left endpoint
     Y(2:end,:) = Y(2:end,:) - a*(fluxes(2:end,:) - fluxes(1:(end-1),:));
     %Y(2:(end-1),:) = (Y(1:(end-2),:) + Y(3:end,:))/2 ...
@@ -249,6 +251,7 @@ while(t < tf - eps)
         fprintf('Output at t=%f, iout = %f\n',t,iout);
         iout = iout + 1;
         output_frame = false;
+        exportgraphics(gca,run_name + ".gif","Append",true)
     end
  
     it = it + 1; 
@@ -306,5 +309,7 @@ bsol.t_dim = t_dim;
 %------------Save the data----------------
 
 if(~isempty(run_name))
-    save(['./runs_autosave/',run_name,'.mat'],'bsol');
+    parentDirectory = fileparts(cd);
+    save(parentDirectory + "/runs_autosave/ " + run_name + ".mat", 'bsol')
+    %save("./runs_autosave/ " + run_name + ".mat",'bsol');
 end

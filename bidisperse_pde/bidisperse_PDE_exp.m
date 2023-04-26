@@ -236,7 +236,7 @@ while(t < tf - eps)
     plot(X,Y,'LineWidth',2);
     title(sprintf('t = %5.2f s',t*t_dim));
     legend("Fluid", "Species 1 (Larger)", "Species 2 (Smaller)")
-    drawnow
+
 
     %Y(1,:) = Y(1,:); %no change on left endpoint
     Y(2:end,:) = Y(2:end,:) - a*(fluxes(2:end,:) - fluxes(1:(end-1),:));
@@ -251,6 +251,7 @@ while(t < tf - eps)
         fprintf('Output at t=%f, iout = %f\n',t,iout);
         iout = iout + 1;
         output_frame = false;
+        drawnow
         exportgraphics(gca,run_name + ".gif","Append",true)
     end
  

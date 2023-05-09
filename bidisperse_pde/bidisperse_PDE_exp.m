@@ -219,7 +219,7 @@ while(t < tf - eps)
             max_speed = max([max_speed,3*fluxes(i,:)/Y(i,1)]);
         end
     end
-    
+
     %max_speed = 3*max(max(abs(fluxes./Y))); %estimate by max of f/h, g1/n1, g2/n2
     
     dt = CFL_max*dx/max_speed; %new dt
@@ -231,6 +231,9 @@ while(t < tf - eps)
     end
     
     a = dt/dx;
+    if (a < 0)
+        disp("TEST") %DEBUG STATEMENT REMOVE LATER
+    end
     
     set(0,'currentFigure',1);
     plot(X,Y,'LineWidth',2);
@@ -240,6 +243,9 @@ while(t < tf - eps)
 
     %Y(1,:) = Y(1,:); %no change on left endpoint
     Y(2:end,:) = Y(2:end,:) - a*(fluxes(2:end,:) - fluxes(1:(end-1),:));
+    if ( any(Y < -0.05) )
+        disp("TEST")
+    end %DEBUF CODE TO BE REMOVED LATER
     %Y(2:(end-1),:) = (Y(1:(end-2),:) + Y(3:end,:))/2 ...
     %    - 0.5*a*(fluxes(3:end,:) - fluxes(1:(end-2),:));
     

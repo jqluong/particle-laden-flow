@@ -5,10 +5,10 @@ addpath(parentDirectory + "/ODEsolve")
 
 
 %Set Constants
-ang = 35;
+ang = 50;
 A = set_constants2(ang); %This is where you change the angle
 
-phi0 = 0.4;
+phi0 = 0.5;
 X0 = 0.7;
 
 tf = 20;
@@ -22,4 +22,4 @@ L = [20 20];
 figure(1)
 figure(2) %These need to exist for the solver to output plots per step.
 
-sol = bidisperse_PDE_exp(ang,phi0,X0,tf,t_out,vol,L,"ftableBD_35",1)
+sol = bidisperse_PDE_exp(ang,phi0,X0,tf,t_out,vol,L,"ftableBD_50",1)

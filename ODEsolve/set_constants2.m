@@ -23,7 +23,7 @@ else
     d1 = 725 * 10^-6;  % diameter of larger particle (m)
     d2 = 152.5 * 10^-6; % diameter of smaller particle
     rholiq = 971;    % density of the liquid (kg/m^3)
-    rho = 2500; %density of the sphere
+    rho = 2475; %density of the sphere
 end
 
 if(nargin > 5)

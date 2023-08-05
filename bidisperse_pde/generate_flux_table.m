@@ -3,7 +3,7 @@
 
 varargs = {}; %arguments to be used by set_constants (densities, etc.)
 
-ang = 40; %angle (CHANGE THIS WHEN NEEDED)
+ang = 50; %angle (CHANGE THIS WHEN NEEDED)
 fname = ['ftableBD_',num2str(ang)]; %ftable_bidisperse
 %Add neccessary paths
 

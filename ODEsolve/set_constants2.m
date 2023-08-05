@@ -20,8 +20,8 @@ if(nargin > 1 && ~isempty(varargin{2}))
     rholiq = varargin{4}; %density of liquid
     rho = varargin{5};  %density of sphere
 else   
-    d1 = 725 * 10^-6;  % diameter of larger particle (m)
-    d2 = 152.5 * 10^-6; % diameter of smaller particle
+    d1 = 325 * 10^-6;  % diameter of larger particle (m)
+    d2 = 225 * 10^-6; % diameter of smaller particle
     rholiq = 971;    % density of the liquid (kg/m^3)
     rho = 2475; %density of the sphere
 end

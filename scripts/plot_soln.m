@@ -39,7 +39,7 @@ set(0,'defaulttextinterpreter','latex');
 figure(3)
 clf
 subplot(1,2,1)
-colors = {'r','b'}; %colors for particle 1 and particle 2 (for consistency)
+colors = {'b','r'}; %colors for particle 1 and particle 2 (for consistency)
                     %fluid is always black
                     
                     
@@ -54,9 +54,9 @@ if(type>=1)
     plot(times_exp,fronts_exp(:,1),'xk',times_exp,fronts_exp(:,2),['x',colors{type}],'MarkerSize',2)
     
     if(type==1)
-        legend('fluid','light','Location','Southeast');
+        legend('fluid','larger','Location','Southeast');
     else
-        legend('fluid','heavy','Location','Southeast');
+        legend('fluid','smaller','Location','Southeast');
     end
     
 else
@@ -64,7 +64,7 @@ else
     hold on
     plot(times_exp,fronts_exp(:,1),'xk',times_exp,fronts_exp(:,2),'xr', ...
         times_exp,fronts_exp(:,3),'xb','MarkerSize',2)
-    legend('fluid','light','heavy','Location','Southeast');
+    legend('fluid','larger','smaller','Location','Southeast');
     
 end
 xlabel('$t$ (s)')
@@ -94,9 +94,9 @@ if(type>=1)
     
     %Mono. case: Labels the appropriate particle type
     if(type==1)
-        legend('fluid','light','Location','Southeast');
+        legend('fluid','larger','Location','Southeast');
     else
-        legend('fluid','heavy','Location','Southeast');
+        legend('fluid','smaller','Location','Southeast');
     end
 else
     %Bidisperse case
@@ -104,7 +104,7 @@ else
     hold on
     plot(times_exp_e,fronts_exp(:,1),'xk',times_exp_e,fronts_exp(:,2),'xr', ...
         times_exp_e,fronts_exp(:,3),'xb','MarkerSize',2)
-    legend('fluid','light','heavy','Location','Northwest');
+    legend('fluid','larger','smaller','Location','Northwest');
 end
 xlabel('$t^{1/3}$ (s)')
 ylabel('cm')

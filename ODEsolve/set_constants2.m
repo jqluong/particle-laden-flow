@@ -12,6 +12,10 @@ phimax = 0.61;  %Maximum packing fraction
 
 alpha = pi * ang/180; % inclination angle
 Kcoll = 0.41;
+%Common diameters
+%GSB3: 0.725mm
+%GSB5: 0.3625mm
+%GSB7: 0.215mm 
 
 %(add an argument to pass in rho of sphere)
 if(nargin > 1 && ~isempty(varargin{2}))
@@ -20,8 +24,8 @@ if(nargin > 1 && ~isempty(varargin{2}))
     rholiq = varargin{4}; %density of liquid
     rho = varargin{5};  %density of sphere
 else   
-    d1 = 725 * 10^-6;  % diameter of larger particle (m) (GSB3)
-    d2 = 362.5 * 10^-6; % diameter of smaller particle (GSB5)
+    d1 = 362.5 * 10^-6;  % diameter of larger particle (m) (GSB3)
+    d2 = 215 * 10^-6; % diameter of smaller particle (GSB5)
     rholiq = 971;    % density of the liquid (kg/m^3)
     rho = 2475; %density of the sphere
 end

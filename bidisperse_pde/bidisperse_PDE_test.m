@@ -5,18 +5,18 @@ addpath(parentDirectory + "/ODEsolve")
 
 
 %Set Constants
-ang = 35;
+ang = 25;
 A = set_constants2(ang); %This is where you change the angle
 
-phi0 = 0.4;
-X0 = 0.2;
+phi0 = 0.3842;
+X0 = 0.5;
 
 tf = 20;
 nout = 41;
 t_out = linspace(0,tf,nout);
 t_out = [t_out(1) t_out(2:end)];
 
-vol = 82.5; %Change this to 82.5
+vol = 96.78; %Change this to 82.5
 L = [35 35]; %Transient length
 
 figure(1)

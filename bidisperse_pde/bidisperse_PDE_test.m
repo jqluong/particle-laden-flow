@@ -9,14 +9,14 @@ ang = 20;
 A = set_constants2(ang); %This is where you change the angle
 
 phi0 = 0.3842;
-X0 = 0.5;
+X0 = 0.75;
 
 tf = 20;
 nout = 41;
 t_out = linspace(0,tf,nout);
 t_out = [t_out(1) t_out(2:end)];
 
-vol = 81.86; %Change this to 82.5
+vol = 89.87; %Change this to 82.5
 L = [35 35]; %Transient length
 
 figure(1)

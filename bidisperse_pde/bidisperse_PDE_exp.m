@@ -164,7 +164,6 @@ it = 1;
 
 dt_max = tf/100;
 set(0,'currentFigure',1);
-
 %t_dim_1 = t_dim*A.nul/nul_eff_1;
 
 C_wm_1 = (phiL*XL*A.rhos1 + 1)/(1-XL*phiL/A.phimax)^(-2);
@@ -231,21 +230,20 @@ while(t < tf - eps)
     end
     
     a = dt/dx;
-    if (a < 0)
-        disp("TEST") %DEBUG STATEMENT REMOVE LATER
-    end
     
     set(0,'currentFigure',1);
     plot(X,Y,'LineWidth',2);
     title(sprintf('t = %5.2f s',t*t_dim));
+    xlabel('Track length (cm)')
+    ylabel('Height profile')
     legend("Fluid", "Species 1 (Larger)", "Species 2 (Smaller)")
+    fontsize(24, "points")
+    colororder(["#000000" "#0000FF" "#FF0000"])
+    %Changes color to black fluid, blue large, red small
 
 
     %Y(1,:) = Y(1,:); %no change on left endpoint
     Y(2:end,:) = Y(2:end,:) - a*(fluxes(2:end,:) - fluxes(1:(end-1),:));
-    if ( any(Y < -0.05) )
-        disp("TEST")
-    end %DEBUF CODE TO BE REMOVED LATER
     %Y(2:(end-1),:) = (Y(1:(end-2),:) + Y(3:end,:))/2 ...
     %    - 0.5*a*(fluxes(3:end,:) - fluxes(1:(end-2),:));
     
@@ -258,6 +256,8 @@ while(t < tf - eps)
         iout = iout + 1;
         output_frame = false;
         drawnow
+        %fig = gcf;
+        %fig.WindowState = "maximized";
         exportgraphics(gca,run_name + ".gif","Append",true)
     end
  

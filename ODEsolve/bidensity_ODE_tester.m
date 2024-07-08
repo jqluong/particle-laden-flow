@@ -26,12 +26,13 @@ ylabel("\chi")
 
 figure
 hold on
-plot(Z,X .* phi, 'LineWidth', 1.5, 'DisplayName', 'Species 1')
-plot(Z, (1-X) .* phi, 'LineWidth', 1.5, 'DisplayName', 'Species 2')
+plot(Z,X .* phi, 'LineWidth', 2, 'DisplayName', 'Species 1')
+plot(Z, (1-X) .* phi, 'LineWidth', 2, 'DisplayName', 'Species 2')
 legend
 title("\phi_1, \phi_2 v. z for phi_0: " + phi0 + " and \chi_0: " + X0 + " and \alpha: " + A.ang)
 xlabel("z")
 ylabel("\phi")
+fontsize(32, "points")
 hold off
 
 trapz(Z,phi)

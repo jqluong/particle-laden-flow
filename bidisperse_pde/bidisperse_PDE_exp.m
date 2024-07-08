@@ -234,10 +234,10 @@ while(t < tf - eps)
     set(0,'currentFigure',1);
     plot(X,Y,'LineWidth',2);
     title(sprintf('t = %5.2f s',t*t_dim));
-    xlabel('Track length (cm)')
+    xlabel('Track length (m)')
     ylabel('Height profile')
     legend("Fluid", "Species 1 (Larger)", "Species 2 (Smaller)")
-    fontsize(24, "points")
+    fontsize(32, "points")
     colororder(["#000000" "#0000FF" "#FF0000"])
     %Changes color to black fluid, blue large, red small
 

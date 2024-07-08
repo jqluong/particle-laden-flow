@@ -1,6 +1,6 @@
 %This is a script from making a quick gif from a sol file
 %Assume you have a sol struct
-run_name = "alpha50phi40chi70_GSB3GSB5";
+run_name = "presentation_settled_ridged";
 n = length(sol.t_out);
 V_slurry = sol.Vsl*10^6;
 g = 9.8;
@@ -12,12 +12,13 @@ H = Vsl/(wtr*Ltr); %char. height H
 t_dim = A.nul*Ltr/(H^2*g*sin(angr)); %time scaling (in s)
 for i = 1:n
     plot(sol.X,sol.Y(:,:,i),'LineWidth',2);
-    xlabel('Track length (cm)')
+    xlabel('Track length (m)')
+    xlim([-0.1 1.3])
     ylabel('Height profile')
     legend("Fluid", "Species 1 (Larger)", "Species 2 (Smaller)")
-    fontsize(24, "points")
-    %colororder(["#000000" "#0000FF" "#FF0000"]) %black, blue, red
-    colororder(["#000000" "#FF0000" "#0000FF"]) %black, red, blue
+    fontsize(32, "points")
+    colororder(["#000000" "#0000FF" "#FF0000"]) %black, blue, red
+    %colororder(["#000000" "#FF0000" "#0000FF"]) %black, red, blue
     title(sprintf('t = %5.2f s',sol.t_out(i)*t_dim));
     fig = gcf;
     fig.WindowState = "maximized";

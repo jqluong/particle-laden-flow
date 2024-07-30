@@ -17,7 +17,7 @@ rhoX = A.rhos;
 
 %Auxillary functions
 b = abs(A.d1 - A.d2 / (A.d1 + A.d2));
-phi_m = A.phimax * (1 + 3/2 * b^(3/2) * (X)^3/2 * (1 - X));
+phi_m = A.phimax * (1 + 3/2 * b^(3/2) * (X)^(3/2) * (1 - X));
 %mu = (1 - phi/phi_m)^-2;
 phi_tr = 0.4;
 D_tr = 1/2*min(phi^2,phi_tr^2);

@@ -55,8 +55,8 @@ else
     
     %phi'
     g = Kc*sigma*(phi_m - phi) + (Kv - Kc)*2*phi*sigma;
-    h1 = Kc*(phi*sigma*(phi_m-phi) + phi*X*sigma*xi);
-    h2 = Kc*(-phi*sigma*(phi_m-phi) + phi*(1-X)*sigma*xi);
+    h1 = Kc*(phi*sigma*(phi_m-phi) + 2*phi*X*sigma*xi);
+    h2 = Kc*(-phi*sigma*(phi_m-phi) + 2*phi*(1-X)*sigma*xi);
     den_phi = (X^2 + a*(1/d1^2 + 1/d2^2)*X*(1-X) + (1-X)^2);
     num_phi1 = (X + a/d2^2*(1-X))*h1 + ((1-X) + a/d1^2*X)*h2;
     num_phi2 = 2/9*cot(alpha)*rhoX*(1-phi) + ...

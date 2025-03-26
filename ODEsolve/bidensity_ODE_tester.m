@@ -1,8 +1,8 @@
 clear all
 A = set_constants2(30); %This is where you change the angle
 
-phi0 = 0.6;
-X0 = 0.7;
+phi0 = 0.2;
+X0 = 0.3;
 p0 = [phi0 X0];  %Initial guess good enough to be phi0 and X0 for now
 
 %Solve ODE
@@ -13,26 +13,28 @@ phi = sol.phi;
 sigma = sol.sigma;
 T = sol.T;
 figure
-plot(Z,phi,'-k','LineWidth', 1.5);
-title("\phi v. Z for phi_0: " + phi0 + " and \chi_0: " + X0 + " and \alpha: " + A.ang)
+plot(Z,phi,'-k','LineWidth', 2);
+title("\phi v. Z for \phi_0: " + phi0 + " and \chi_0: " + X0 + " and \alpha: " + A.ang)
 xlabel("z")
 ylabel("\phi")
 
 figure
-plot(Z,X,'-k','LineWidth', 1.5);
-title("\chi v. Z for phi_0: " + phi0 + " and \chi_0: " + X0 + " and \alpha: " + A.ang)
+plot(Z,X,'-k','LineWidth', 2);
+title("\chi v. Z for \phi_0: " + phi0 + " and \chi_0: " + X0 + " and \alpha: " + A.ang)
 xlabel("z")
 ylabel("\chi")
 
 figure
 hold on
-plot(Z,X .* phi, 'LineWidth', 2, 'DisplayName', 'Species 1')
-plot(Z, (1-X) .* phi, 'LineWidth', 2, 'DisplayName', 'Species 2')
+xlim([0,1])
+plot(Z,X .* phi, 'LineWidth', 3, 'DisplayName', 'Larger Species')
+plot(Z, (1-X) .* phi, 'LineWidth', 3, 'DisplayName', 'Smaller Species')
 legend
-title("\phi_1, \phi_2 v. z for phi_0: " + phi0 + " and \chi_0: " + X0 + " and \alpha: " + A.ang)
+title("\phi_1, \phi_2 v. z for \phi_0: " + phi0 + " and \chi_0: " + X0 + " and \alpha: " + A.ang)
 xlabel("z")
 ylabel("\phi")
-fontsize(32, "points")
+fontsize(40, "points")
+set(gca,'LineWidth',2,'TickLength',[0.025 0.025]);
 hold off
 
 trapz(Z,phi)

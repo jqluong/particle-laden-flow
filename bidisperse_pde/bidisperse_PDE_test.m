@@ -5,10 +5,10 @@ addpath(parentDirectory + "/ODEsolve")
 
 
 %Set Constants
-ang = 25;
+ang = 55;
 A = set_constants2(ang); %This is where you change the angle
 
-phi0 = 0.59;
+phi0 = 0.4;
 X0 = 0.5;
 
 tf = 20;

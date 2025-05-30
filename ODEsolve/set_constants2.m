@@ -1,5 +1,5 @@
-%Sets constants for the bidisperse system.
-%Input angle is in degrees.
+%%Sets constants for the bidisperse system.
+% Input angle is in degrees.
 
 %TODO: make varargin take kwargs!
 
@@ -79,5 +79,6 @@ A.c1 = c1; A.c2 = c2;
 A.rho = rho; 
 A.rhos = rhos;
 A.rhos1 = rhos;
-A.rhos2 = rhos; %I am very lazy
+A.rhos2 = rhos; %These are all the same for bidisperse case (all the same
+%density)
 A.Kv = Kvisc; A.Kc = Kcoll; A.Kt = Kt; A.beta = beta;

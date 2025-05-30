@@ -35,6 +35,7 @@ xlabel("z")
 ylabel("\phi")
 fontsize(40, "points")
 set(gca,'LineWidth',2,'TickLength',[0.025 0.025]);
+colororder(["#FF0000" "#20ADFF"]) %fluid, larger, smaller
 hold off
 
 trapz(Z,phi)

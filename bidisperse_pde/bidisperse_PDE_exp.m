@@ -256,8 +256,8 @@ while(t < tf - eps)
         iout = iout + 1;
         output_frame = false;
         drawnow
-        %fig = gcf;
-        %fig.WindowState = "maximized";
+        fig = gcf; %this is to make gifs
+        fig.WindowState = "maximized";
         exportgraphics(gca,run_name + ".gif","Append",true)
     end
  

@@ -1,3 +1,7 @@
+%%This function calculates the maximum packing fraction, which in the 
+% bidisperse case depends on the diameters of the particles but also
+% the ratio between them.
+
 function phimax = calc_phimax(phi1,phi2,A)
     d1 = A.d1;
     d2 = A.d2;

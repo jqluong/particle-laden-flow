@@ -7,8 +7,8 @@ This code originated from Jeffery Wong supporting his paper ["A conservation law
 
 TODO: add specific files that are "main"
 
-**bidisperse_pde**: Contains the code that solves the system of PDEs that model bidisperse particle laden flow on an incline at a given angle $\alpha$ where a corresponding flux table (.mat file) for $\alpha$ is present in the working directory. Such a flux table can be generated with the files in the "ODEsolve" folder.
+**bidisperse_pde**: Contains the code that solves the system of PDEs that model bidisperse particle laden flow on an incline at a given angle $\alpha$ where a corresponding flux table (.mat file) for $\alpha$ is present in the working directory. The flux tables can be generated with the script "generate_flux_table.m". It uses the functions defined in the folder "ODEsolve". Once a flux table is generated, the script "bidisperse_PDE_test.m" will simulate the system of conservation laws governing particle laden flow. 
 
-**fluxtable_\***: Each folder refers to a specific set of particle pairs.  In each folder, the flux table also corresponds to an inclination angle $\alpha$. These fluxtables are required to simulate the system of PDEs modelling bidisperse particle laden flow. The fluxtables used for figures in this paper are in the folder "fluxtable_paper".
+**fluxtable_\***: Flux tables for various particle pairs are stored in these folders. In each folder, the flux tables also correspond to an inclination angle $\alpha$. These fluxtables are required to simulate the system of PDEs modelling bidisperse particle laden flow. The fluxtables used for figures in this paper are in the folder "fluxtable_paper".
 
 **ODEsolve**: Contains the code that solves the equilibirum profile boundary value problem. The function "set_constants.m" should be edited to reflect different physical parameters (such as liquid viscosity, particle diameter. etc.). The script "bidensity_ODE_tester.m" will solve the eqilibrium profile ODE system and plot its solution.

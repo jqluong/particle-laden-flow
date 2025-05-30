@@ -12,3 +12,5 @@ TODO: add specific files that are "main"
 **fluxtable_\***: Flux tables for various particle pairs are stored in these folders. In each folder, the flux tables also correspond to an inclination angle $\alpha$. These fluxtables are required to simulate the system of PDEs modelling bidisperse particle laden flow. The fluxtables used for figures in this paper are in the folder "fluxtable_paper".
 
 **ODEsolve**: Contains the code that solves the equilibirum profile boundary value problem. The function "set_constants.m" should be edited to reflect different physical parameters (such as liquid viscosity, particle diameter. etc.). The script "bidensity_ODE_tester.m" will solve the eqilibrium profile ODE system and plot its solution.
+
+**runs_autosave**: As a backup, the code will save the last used flux table here. This feature isn't used as much, but is left intact.

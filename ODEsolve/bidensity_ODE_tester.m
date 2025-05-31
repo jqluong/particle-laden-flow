@@ -2,6 +2,7 @@
 % Requires: none
 % Output: Figures that show the solutions to the equilibrium system.
 
+
 clear all
 
 %%Prompt user to input parameters: 

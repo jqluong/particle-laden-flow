@@ -5,7 +5,7 @@
 
 function A = set_constants2(varargin)
 
-%ANGLE d1 d2 rholiq
+%ANGLE rhop1 rhop2 rholiq
 ang = varargin{1};
 A.ang = ang;
 phimax = 0.61;  %Maximum packing fraction
@@ -17,12 +17,10 @@ Kcoll = 0.41;
 %GSB5: 0.3625mm
 %GSB7: 0.215mm 
 
-%(add an argument to pass in rho of sphere)
 if(nargin > 1 && ~isempty(varargin{2}))
-    d1 = varargin{2};  % diameter of larger particle (m)
-    d2 = varargin{3}; % diameter of smaller particle
-    rholiq = varargin{4}; %density of liquid
-    rho = varargin{5};  %density of sphere
+    rhopart1 = varargin{2};  % density of smaller particle
+    rhopart2 = varargin{3}; % density of larger particle
+    rholiq = varargin{4}; 
 else   
     d1 = 625 * 10^-6;  % diameter of larger particle (m) (new particles)
     d2 = 200 * 10^-6; % diameter of smaller particle (GSB5)
@@ -30,7 +28,7 @@ else
     rho = 2475; %density of the sphere
 end
 
-if(nargin > 5)
+if(nargin > 4)
     A.phi_shift = varargin{5};
 else
     A.phi_shift = 0;
@@ -38,6 +36,7 @@ end
 
 
     
+
 rhos = (rho-rholiq)/rholiq; %Normalized density
     
 Kvisc=0.62; % shear induced migration constants
@@ -59,6 +58,7 @@ c2   = 2/(9*Kcoll)*cot(alpha);     % constant c2 in ode
 %A.c0 = 2*(rhos2-rhos1)*cot(alpha)/9; %constant c0 in X' ODE (two species)
 A.c0 = 2*cot(alpha)/9; %%%%%%%THIS IS A PLACEHOLDER VALUE%%%%%%%%%%
 
+
 %Critical phi as a function of density
 A.phic = @(rhos) -(c2*rhos+1)./(2*rhos)+sqrt(c2+(0.5*(c2*rhos+1)./rhos).^2);
 
@@ -66,13 +66,14 @@ A.phic = @(rhos) -(c2*rhos+1)./(2*rhos)+sqrt(c2+(0.5*(c2*rhos+1)./rhos).^2);
 A.p_r = @(rhos) (phimax + rhos*phimax^2 + c2*rhos*(phimax-1))/(c1*phimax*(1+rhos*phimax));
 
 %IVP solver settings
-A.vopt = odeset('RelTol', 1e-5, 'AbsTol', 5e-7,'MaxStep', 1e-2);
+A.vopt = odeset('RelTol', 1e-7, 'AbsTol', 5e-8,'MaxStep', 5e-2);
 A.ODEsolve = @ode15s;
 A.gamma = A.c0/Kt; %Scaling factor
 A.max_it = 100;
-A.dz = 0.0005; %Timestep for Euler Method
 
-A.d1 = d1; A.d2 = d2; A.rholiq = rholiq;
+
+
+A.rhopart1 = rhopart1; A.rhopart2 = rhopart2; A.rholiq = rholiq;
 A.phimax = phimax; 
 A.alpha = alpha; 
 A.c1 = c1; A.c2 = c2;

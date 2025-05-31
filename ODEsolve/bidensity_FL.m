@@ -12,7 +12,7 @@ phi= y(1);
 X = y(2);
 %X = exp(y(2)*gamma); %We work with normal X in this ODE, and convert back
 sigma= y(3);
-d = 3; %Physical Dimension of system
+
 
 rhoX = A.rhos;
 
@@ -36,6 +36,7 @@ elseif (abs(X - 0) < tol || abs(X - 1) < tol) %X = 0,1 solve ODE in 1 species
         *( (1 + rhoX*phi)*phi - 2*rhoX*cot(A.alpha)/(9*Kc) * (1-phi));
     dsLX = 0;
 else 
+
     %There's a bunch of terms to build up to create the ODEs
     %Diffusion type coefficient matrices
     %Construct AA, matrix for drift
@@ -67,6 +68,3 @@ end
 
 
 dF=[dphi dsLX dsigma]';
-end
-
-%Auxillary functions

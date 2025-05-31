@@ -84,7 +84,7 @@ while(norm(Fx)>tol && it < max_it)
     Fx_old = Fx;
     Fx = F(xn,pars{:});
     if(isnan(norm(Fx)))
-        fprintf('Solver has failed.  (Broyden)\n');
+        fprintf('Solver has failed.\n');
         it = -1;
         x = zeros(n,1);
         return

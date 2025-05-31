@@ -10,7 +10,7 @@ function [G,Z,phi,sigma] = fwd_solve_1(s,phi0,X0,A)
 
 ffL = @(z,Y) bidensity_F1(z,Y,X0,A);
 
-[Z,Y] = A.ODEsolve(ffL,[0 1],[s 1+(A.rhos2+ (A.rhos1-A.rhos2)*X0)*phi0],A.vopt);
+[Z,Y] = A.ODEsolve(ffL,[0 1],[s 1+(A.rhos)*phi0],A.vopt);
 
 phi = Y(:,1);
 sigma = Y(:,2);

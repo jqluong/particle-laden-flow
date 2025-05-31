@@ -16,14 +16,15 @@ function [G, Z,X, phi,sigma] = fwd_solve(Y0,phi0,X0,A)
 
 ffL = @(z,Y) bidensity_FL(z,Y,A);
 s = Y0(1); t = Y0(2);
-[Z,Y] = A.ODEsolve(ffL,[0 1],[s t 1+(A.rhos2+ (A.rhos1-A.rhos2)*X0)*phi0],A.vopt);
+[Z,Y] = A.ODEsolve(ffL,[0 1],[s t 1+(A.rhos)*phi0],A.vopt);
 phi = Y(:,1); sigma = Y(:,3);
-X = exp(A.gamma*Y(:,2));
+X = Y(:,2);
+%X = exp(A.gamma*Y(:,2));
 
 T1 = Z(end);
-G = [sigma(end) - (1-T1); trapz(Z,phi) - phi0];
+G = [sigma(end) - (1-T1); trapz(Z,X.*phi)/phi0 - X0];
 
 %Heuristic fix for shooting
-if(phi(end) > A.phimax/2 && T1 < 1)
-    G(2) = G(2) + A.phimax*(1-T1);
-end
+%if(phi(end) > A.phimax/2 && T1 < 1)
+%    G(2) = G(2) + A.phimax*(1-T1);
+%end

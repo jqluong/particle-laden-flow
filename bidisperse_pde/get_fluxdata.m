@@ -18,7 +18,7 @@ function [fpars, dfpars] = get_fluxdata(vname,varargin)
 % Note: Ignore the above and varargin
 
 %load the pre-computed data 
-ftable = load([vname,'.mat'],vname); ftable = ftable.(vname);
+ftable = load(vname + ".mat",vname); ftable = ftable.(vname);
 phi0_t = ftable.phi0;
 X0_t = ftable.X0;
 flux_values = ftable.F; 

@@ -56,7 +56,7 @@ for j=2:N-1
     
     g = sol.g; 
     
-    g(2) = -0.05; %Modify initial guess now that X(0) isn't zero
+    %g(2) = -0.05; %Modify initial guess now that X(0) isn't zero
     
     for i=N-1:-1:1 %Work backwards from X0 = 1 to X0 = 0
         

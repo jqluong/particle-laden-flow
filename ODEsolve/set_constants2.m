@@ -1,5 +1,5 @@
-%Sets constants for the bidisperse system.
-%Input angle is in degrees.
+%%Sets constants for the bidisperse system.
+% Input angle is in degrees.
 
 %TODO: make varargin take kwargs!
 
@@ -12,15 +12,20 @@ phimax = 0.61;  %Maximum packing fraction
 
 alpha = pi * ang/180; % inclination angle
 Kcoll = 0.41;
+%Common diameters
+%GSB3: 0.725mm
+%GSB5: 0.3625mm
+%GSB7: 0.215mm 
 
 if(nargin > 1 && ~isempty(varargin{2}))
     rhopart1 = varargin{2};  % density of smaller particle
     rhopart2 = varargin{3}; % density of larger particle
     rholiq = varargin{4}; 
 else   
-    rhopart1 = 2475;  % density of smaller particle
-    rhopart2 = 3800; % density of larger particle
-    rholiq = 971;    % density of the liquid
+    d1 = 625 * 10^-6;  % diameter of larger particle (m) (new particles)
+    d2 = 200 * 10^-6; % diameter of smaller particle (GSB5)
+    rholiq = 971;    % density of the liquid (kg/m^3)
+    rho = 2475; %density of the sphere
 end
 
 if(nargin > 4)
@@ -31,8 +36,8 @@ end
 
 
     
-rhos1 = (rhopart1-rholiq)/rholiq;  % difference in densities
-rhos2 = (rhopart2-rholiq)/rholiq;
+
+rhos = (rho-rholiq)/rholiq; %Normalized density
     
 Kvisc=0.62; % shear induced migration constants
 
@@ -49,8 +54,10 @@ A.Dtr = @(phi) (phi <= phia)*Kt*phi.^2 + (phi > phia)*Kt*(phia)^2;
 
 
 c1   = 2*(Kvisc-Kcoll)/Kcoll;      % constant c1 in ode
-c2   = 2/(9*Kcoll*tan(alpha));     % constant c2 in ode
-A.c0 = 2*(rhos2-rhos1)*cot(alpha)/9; %constant c0 in X' ODE (two species)
+c2   = 2/(9*Kcoll)*cot(alpha);     % constant c2 in ode
+%A.c0 = 2*(rhos2-rhos1)*cot(alpha)/9; %constant c0 in X' ODE (two species)
+A.c0 = 2*cot(alpha)/9; %%%%%%%THIS IS A PLACEHOLDER VALUE%%%%%%%%%%
+
 
 %Critical phi as a function of density
 A.phic = @(rhos) -(c2*rhos+1)./(2*rhos)+sqrt(c2+(0.5*(c2*rhos+1)./rhos).^2);
@@ -69,6 +76,10 @@ A.max_it = 100;
 A.rhopart1 = rhopart1; A.rhopart2 = rhopart2; A.rholiq = rholiq;
 A.phimax = phimax; 
 A.alpha = alpha; 
-A.c1 = c1; A.c2 = c2; 
-A.rhos1 = rhos1; A.rhos2 = rhos2;
+A.c1 = c1; A.c2 = c2;
+A.rho = rho; 
+A.rhos = rhos;
+A.rhos1 = rhos;
+A.rhos2 = rhos; %These are all the same for bidisperse case (all the same
+%density)
 A.Kv = Kvisc; A.Kc = Kcoll; A.Kt = Kt; A.beta = beta;

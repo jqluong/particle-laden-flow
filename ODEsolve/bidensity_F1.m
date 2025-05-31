@@ -13,7 +13,7 @@ phimax = A.phimax;
 phi= y(1);
 sigma= y(2);
 
-rhoX = A.rhos2*(1-X0) + A.rhos1*X0;
+rhoX = A.rhos;%A.rhos2*(1-X0) + A.rhos1*X0;
 
 if(phi >= phimax || phi<= 0)
     dphi = 0;

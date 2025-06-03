@@ -26,9 +26,10 @@ t_out = linspace(0,tf,nout);
 t_out = [t_out(1) t_out(2:end)];
 
 vol = input("Enter in initial total volume of mixture: ");
-L_trans = input("Enter in transient length: "); %This is the length of the
+L_trans = input("Enter in transient length (cm): "); %This is the length of the
 %"well mixed" regime. The slurry will obey Huppert's 1/3 law and remain
 %well mixed until it reaches L_trans;
+%Set this to L_trans = 35 cm if you're not sure.
 L = [L_trans L_trans]; %The second element in the vector always
 % should be the same as the first. We are not considering any "secondary"
 % transient behavior in this work.

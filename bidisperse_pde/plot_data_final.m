@@ -14,7 +14,7 @@ t_dim = A.nul*Ltr/(H^2*g*sin(angr)); %time scaling (in s)
 
 % Choose which frame you want here. If you want the final frame, it's
 % easiest to put in "end" as the index instead of "i".
-i = 27;
+i = 2;
 
 %Plot
 plot(sol.X,sol.Y(:,:,end),'LineWidth',4);
@@ -26,5 +26,5 @@ fontsize(40, "points")
 colororder(["#000000" "#FF0000" "#20ADFF"])
 %The order of the variables is fluid, larger, smaller
 %colororder(["#000000" "#FF0000" "#0000FF"]) %black, red, blue
-title(sprintf('t = %5.2f s',sol.t_out(end)*t_dim));
+title(sprintf('t = %5f s',sol.t_out(i)*t_dim));
 set(gca,'TickLength',[0.025 0.025],'LineWidth',2);

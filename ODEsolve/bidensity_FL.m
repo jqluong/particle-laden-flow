@@ -42,6 +42,7 @@ else
     %Construct AA, matrix for drift
     d1 = A.d1 * 10^4; %Normalize
     d2 = A.d2 * 10^4;
+    d = 3; %Dimension of problem
     a = (d1 + d2)^2 /2^(d+1) * (d1+d2)^d/(d1^d + d2^d);
     detA = d1^2 * d2^2 - a^2;
     %Construct G, matrix to invert

@@ -26,6 +26,8 @@ else
     d2 = 200 * 10^-6; % diameter of smaller particle (GSB5)
     rholiq = 971;    % density of the liquid (kg/m^3)
     rho = 2475; %density of the sphere
+    rhopart1 = rho;
+    rhopart2 = rho;
 end
 
 if(nargin > 4)
@@ -75,7 +77,8 @@ A.max_it = 100;
 
 A.rhopart1 = rhopart1; A.rhopart2 = rhopart2; A.rholiq = rholiq;
 A.phimax = phimax; 
-A.alpha = alpha; 
+A.alpha = alpha;
+A.d1 = d1; A.d2 = d2;
 A.c1 = c1; A.c2 = c2;
 A.rho = rho; 
 A.rhos = rhos;
